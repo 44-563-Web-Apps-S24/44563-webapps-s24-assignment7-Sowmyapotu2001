@@ -7,12 +7,12 @@
 		.flex-container {
 			display: flex;
 			flex-direction: row;
-			background-color: red;
+			background-color: orange;
 		}
 
 		.flex-container>div {
 			/*div children of the flex container*/
-			background-color: #f1f1f1;
+			background-color: olivedrab;
 			margin: 10px;
 			padding: 20px;
 			font-size: 30px;
@@ -53,10 +53,10 @@
 </body>
 <script>
 	function makeNewDiv() {
-		/* make the div and its text */
+		
 		let element = document.createElement("div")
 		element.innerHTML = document.querySelector("input").value
-		element.style.color = "orange"
+		element.style.color = "pink"
 
 		/* add it to the container */
 		let container = document.getElementById('target')
@@ -76,7 +76,7 @@
 	function addFront() {
 		let element = document.createElement("div");
 		element.innerHTML = document.querySelector("input").value
-		element.style.color = "orange"
+		element.style.color = "blue"
 		let container = document.getElementById('target')
 		container.insertBefore(element, container.firstChild);
 	}
