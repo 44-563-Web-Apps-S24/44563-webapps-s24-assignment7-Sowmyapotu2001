@@ -37,10 +37,11 @@
     <h1>Find the coins by Sowmya Potu</h1>
     <p>Click on the locations to find
         coins, beware the monster</p>
-    <p id="locations">Numbof locations checked is zero.</p>
+    <p id="locations">Number of locations checked is zero.</p>
     <p id="score">Score is zero.</p>
-    <p>Click fhelp.</p>
+    <p onclick="help()">Click for help.</p>
     <p id="help">Help report</p>
+    <button onclick="newGame()"  >Newgame</button>
     <div class="row">
         <div class="location"><img src="building.jpg" id="image0" onclick="check(0)" alt="Building"></div>
         <div class="location"><img src="building.jpg" id="image1" onclick="check(1)"alt="Building"></div>
@@ -108,89 +109,110 @@
     var locations = 0;
     var lastLocation = 0;
     var gameOver = false;
-    var fourRandomNumbers = [];
-    var fancyCoinLocations = [];
-    var monsterLocation = [];
-    initializeLocations();
-    function initializeLocations() {
-      fourRandomNumbers = genFourRandomNumbers();
-      fancyCoinLocations = fourRandomNumbers.slice(0, 2);
-      monsterLocation = fourRandomNumbers.slice(2);
-
-      console.log("fancy is " + fancyCoinLocations);
-      console.log("monster is " + monsterLocation);
-    }
-
-    function genFourRandomNumbers() {
-      const random = new Set();
-      while (random.size < 4) {
-        random.add(Math.floor(Math.random() * 35));
-      }
-      var arr1 = Array.from(random);
-      return arr1;
-    }
+   // var fourRandomNumbers = [];
+    var fancyCoinLocations = [2, 5, 14, 19, 23, 33];
+    var monsterLocation = 20;
+    //initializeLocations();
+   
     function check(position) {
       if (gameOver) {
         return;
       }
-      id = ids[position];
+      let id = ids[position];
       image = document.getElementById(id);
       if (fancyCoinLocations.includes(position)) {
         image.src = "./fanciercoin.jpg";
         score += 3;
+        locations++;
+        document.getElementById("locations").innerText = "Number of locations checked is  "+locations;
+        document.getElementById("score").innerText = score;
       }
-      else if (monsterLocation.includes(position)) {
+      else if (monsterLocation == (position)) {
         image.src = "./monster.jpg"
         gameOver = true;
         score -= 5;
+        locations++;
+        document.getElementById("locations").innerText = `Number of locations:`+ locations;
+        document.getElementById("score").innerText = score;
       }
       else {
         image.src = "./coin.jpg"
         score += 1;
+        locations++;
+        document.getElementById("locations").innerText =`Number of locations:`+ locations; 
+        document.getElementById("score").innerText = score;
       }
-      locations += 1;
+      
       lastLocation = position;
-      updateLabels();
+     
     }
+    function help()
+        {
+            
+            var col= lastLocation%5;
+            var row= Math.floor(lastLocation/5);
+            
+            const kinshipLocations = [lastLocation-1,lastLocation+1,lastLocation-5,lastLocation+5];
+            for(const kinship of kinshipLocations)
+            {
+                const adjustedLoc = (kinship+35)%35;
+                if(fancyCoinLocations.includes(adjustedLoc))
+            {
+                document.getElementById("help").innerHTML="So close";
+                return;
+            }
 
-    function updateLabels() {
-      location_text = document.getElementById("locations");
-      location_text.innerHTML = locations;
+            }
+            var monsterRow = Math.floor(monsterLocation / 5);
+            var monsterCol = monsterLocation % 5;
+            if (row - monsterRow< 1 && col - monsterCol < 1) {
+              document.getElementById("help").innerHTML="Grr";
+            }
+            else
+            {
+                document.getElementById("help").innerHTML="All clear";
+            }
+            document.getElementById("help").onclick = help;
+        }
+    // function resetLocations() {
+    //   gameOver = false;
+    //   score = 0;
+    //   locations = 0;
+    //   lastLocation = 0;
+    //   initializeLocations();
+    //   updateLabels();
+    //   help_text = document.getElementById("help");
+    //   help_text.innerHTML = "Help Report"
+    //   var imgElements = document.querySelectorAll("img");
+    //   imgElements.forEach((image) => image.src = "./building.jpg");
+    // }
+    function newGame()
+{
+  score = 0;
+  const score1 = document.getElementById("score");
+  score1.textContent = `Score is ${score}`;
 
-      score_text = document.getElementById("score");
-      score_text.innerHTML = score;
-    }
-    function help() {
-      console.log("help called")
-      const result = ["So close", "Grrr", "All clear"];
-      help_text = document.getElementById("help");
-      var row = location / 5;
-      var col = location % 5;
-      const kinship_locations = [lastLocation + 1, lastLocation - 1, lastLocation + 5, lastLocation - 5];
-      const grr_locations = [monsterLocation + 1, monsterLocation - 5, monsterLocation + 5]
-      if (kinship_locations.some((element) => fancyCoinLocations.includes(element))) {
-        help_text.innerHTML = result[0];
-      }
-      else if (grr_locations.includes(lastLocation)) {
-        help_text.innerHTML = result[1];
-      }
-      else {
-        help_text.innerHTML = result[2];
-      }
-    }
-    function resetLocations() {
-      gameOver = false;
-      score = 0;
-      locations = 0;
-      lastLocation = 0;
-      initializeLocations();
-      updateLabels();
-      help_text = document.getElementById("help");
-      help_text.innerHTML = "Help Report"
-      var imgElements = document.querySelectorAll("img");
-      imgElements.forEach((image) => image.src = "./building.jpg");
-    }
+  locations = 0;
+  const locationsl = document.getElementById("locations");
+  locationsl.textContent = `Number of locations checked is ${locations}`;
 
+  lastLocation = 0;
+  monsterLocation = Math.floor(Math.random() * 35);
+  fancyCoinLocations = Array.from({ length: 6 }, () =>
+      Math.floor(Math.random() * 35)
+  ).filter((value, index, self) => self.indexOf(value) === index);
+
+  gameOver = false;
+
+  for (let i = 0; i < ids.length; i++) {
+      const img = document
+          .getElementById(ids[i])
+          .querySelector('image');
+      img.setAttribute("src", "./building.jpg");
+    //document.getElementById("image" + i).firstChild.src = "Building.jpg.";
+  }
+  //document.getElementById("help").innerHTML = "Help Report";
+}
     </script>
 </body>
 </html>

@@ -46,6 +46,7 @@
 	<button onclick="addFront()">Add Front</button>
 	<button onclick="remove()">Remove</button>
 	<button onclick="swap()">Swap</button>
+	
 
 
 
@@ -53,12 +54,9 @@
 </body>
 <script>
 	function makeNewDiv() {
-		
 		let element = document.createElement("div")
 		element.innerHTML = document.querySelector("input").value
 		element.style.color = "pink"
-
-		/* add it to the container */
 		let container = document.getElementById('target')
 		container.appendChild(element)
 
